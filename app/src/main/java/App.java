@@ -1,11 +1,10 @@
 import com.recipeapp.datahandler.CSVDataHandler;
 import com.recipeapp.datahandler.DataHandler;
-import com.recipeapp.datahandler.JSONDataHandler;
+import main.java.com.recipeapp.datahandler.JSONDataHandler;
 import com.recipeapp.ui.RecipeUI;
 import java.io.*;
 
 public class App {
-
     public static void main(String[] args) {
 
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
@@ -14,8 +13,15 @@ public class App {
             System.out.println("2. JSON");
             System.out.print("Select (1/2): ");
             String choice = reader.readLine();
-            
 
+            if(choice.equals("2")) {
+                JSONDataHandler dataHandler = new JSONDataHandler();
+                //RecipeUI recipeUI = new RecipeUI(dataHandler);
+            } else {
+                CSVDataHandler dataHandler = new CSVDataHandler();
+                //RecipeUI recipeUI = new RecipeUI(dataHandler);
+            }
+            
         } catch (Exception e) {
             System.err.println("Error: " + e.getMessage());
         }
