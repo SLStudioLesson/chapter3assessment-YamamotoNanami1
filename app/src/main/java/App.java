@@ -14,12 +14,22 @@ public class App {
             System.out.print("Select (1/2): ");
             String choice = reader.readLine();
 
+            //「2」を選択した場合
             if(choice.equals("2")) {
+                // JSONDataHandlerのインスタンスを生成
                 JSONDataHandler dataHandler = new JSONDataHandler();
-                //RecipeUI recipeUI = new RecipeUI(dataHandler);
+                // 生成したインスタンスをcom/recipeappパッケージのRecipeUIに渡す
+                RecipeUI recipeUI = new RecipeUI(dataHandler);
+                // displayMenuメソッドを呼び出
+                recipeUI.displayMenu();
+            // 「1」、その他の入力をした場合
             } else {
+                // CSVDataHandlerインスタンスを生成
                 CSVDataHandler dataHandler = new CSVDataHandler();
-                //RecipeUI recipeUI = new RecipeUI(dataHandler);
+                // 生成したインスタンスをcom/recipeappパッケージのRecipeUIに渡す
+                RecipeUI recipeUI = new RecipeUI(dataHandler);
+                // displayMenuメソッドを呼び出す
+                recipeUI.displayMenu();
             }
             
         } catch (Exception e) {
