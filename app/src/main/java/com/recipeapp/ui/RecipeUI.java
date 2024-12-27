@@ -39,7 +39,7 @@ public class RecipeUI {
                         displayRecipes();
                         break;
                     case "2":
-                        addNewRecipe();
+                        addRecipes();
                         break;
                     case "3":
                         break;
@@ -59,6 +59,7 @@ public class RecipeUI {
     public void displayRecipes() {
         try {
             ArrayList<Recipe> data = dataHandler.readData();
+            // 受け取ったデータを表示する
             for(Recipe recipe : data){
                 System.out.println("-----------------------------------");
                 System.out.println("Recipe Name: "+ recipe.getName());
@@ -69,9 +70,44 @@ public class RecipeUI {
                 }
                 System.out.println(String.join(",", newIngredients));
             }
-        } catch (IOException e) {
-            System.out.println("Error reading file: " + getMessage());
+        } catch (IOException e){
+            // エラーが起きた場合の表示
+            System.out.println("Error reading file: " + e.getMessage());
         }
+    }
+
+    public void addRecipes() {
+
+        try {
+            ArrayList<Ingredient> ingredients = new ArrayList<>();
+
+            System.out.println("Adding a new recipe");
+            System.out.print("Enter recipe name: ");
+            // レシピ名の入力
+            String recipeName = reader.readLine();
+
+            while(true) {
+                System.out.print("Enter ingredients (type 'done' when finished): ");
+                // 材料名の入力
+                String ingredientName = reader.readLine();
+                // done と入力されたらbreak
+                if (ingredientName.equals("done")){
+                    break;
+                } else {
+                    Ingredient ingredient = new Ingredient(ingredientName);
+                    ingredients.add(ingredient);
+                    continue;
+                }
+                
+            }
+            Recipe recipe = new Recipe(recipeName, ingredients);
+            dataHandler.writeData(recipe);
+            System.out.println("Recipe added successfully." );
         
+        } catch (IOException e) {
+            // エラーが起きた場合の表示
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+
     }
 }

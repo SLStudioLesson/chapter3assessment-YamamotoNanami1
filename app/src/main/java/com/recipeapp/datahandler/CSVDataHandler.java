@@ -1,6 +1,8 @@
 package com.recipeapp.datahandler;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -24,13 +26,14 @@ public class CSVDataHandler implements DataHandler {
     }
     
     @Override
-    public ArrayList<Recipe> readData() {
+    public ArrayList<Recipe> readData() throws IOException {
         ArrayList<Recipe> data = new ArrayList<>();
-        try(BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            if ((line = reader.readLine()) == null) {
-                throw new Exception();
-            }
+        // recipes.csvからレシピデータを読み込む
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        String line;
+        if ((line = reader.readLine()) == null) {
+            System.out.println("No recipes available.");
+        } else{
             while((line = reader.readLine()) != null) {
                 String[] values = line.split(",");
                 ArrayList<Ingredient> ingredients = new ArrayList<>();
@@ -42,19 +45,29 @@ public class CSVDataHandler implements DataHandler {
                 data.add(recipe);
                 System.out.println("Recipes:");
             }
-            
-        } catch (Exception e) {
-            System.out.println("No recipes available.");
         }
+        // リスト形式で返す
+        reader.close();
         return data;
     }
     
     @Override
-    public void writeData(Recipe recipe) {
+    public void writeData(Recipe recipe) throws IOException {
+        // ファイルに書き込む
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true));
+        writer.newLine();
+        writer.write(recipe.getName() + ",");
+        ArrayList<String> newIngredients = new ArrayList<>();
+        for(Ingredient ingredient : recipe.ingredients()){
+            newIngredients.add(ingredient.getName());
+        }
+        String writeIngredients = String.join(", ", newIngredients);
+        writer.write(writeIngredients);
+        writer.close();
     }
 
     @Override
-    public ArrayList<Recipe> searchData(String keyword) {
+    public ArrayList<Recipe> searchData(String keyword) throws IOException {
         return null;
     }
 }
